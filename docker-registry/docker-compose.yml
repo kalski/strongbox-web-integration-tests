@@ -1,0 +1,19 @@
+version: '3'
+services:
+  strongbox-web-integration-tests-docker-registry:
+    # image: strongboxci/alpine:jdk8-mvn-3.5-docker-registry-2.7.1
+    image: alpine:jdk8-mvn-3.5-docker-registry-2.7.1
+    volumes:
+      - $HOME/.m2:/home/jenkins/.m2
+      # /var/lib/registry is the registry storage
+      - registry:/var/lib/registry
+      - ../:/workspace
+    working_dir: /workspace/docker-registry
+    # override 
+    # entrypoint: /entrypoint.sh 
+    # to defer it's loading until test script runs
+    entrypoint: ''
+    # override 
+    # command: /etc/docker/registry/config.yml
+    # to allow the script to prepare the registry storage and then run the registry itself
+    command: mvn clean install -U
